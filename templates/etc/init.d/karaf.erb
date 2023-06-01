@@ -1,0 +1,74 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          apache-karaf
+# Required-Start:
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Apache Karaf
+# Description:       Apache Karaf
+### END INIT INFO
+
+# System binaries
+SU=/bin/su
+TOUCH=/bin/touch
+
+NAME=$( basename -- $0 )
+DESC="Apache Karaf"
+
+KARAF_ROOT=<%= @instance_root %>
+KARAF_USER=<%= @service_user_name %>
+
+START_DAEMON=${KARAF_ROOT}/bin/start
+STATUS_DAEMON=${KARAF_ROOT}/bin/status
+STOP_DAEMON=${KARAF_ROOT}/bin/stop
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+do_start()
+{
+    echo "Starting ${NAME}: ${DESC}"
+    ${SU} ${KARAF_USER} -c ${START_DAEMON}
+}
+
+do_status()
+{
+    ${SU} ${KARAF_USER} -c ${STATUS_DAEMON}
+}
+
+do_stop()
+{
+    echo "Stopping ${NAME}: ${DESC}"
+    ${SU} ${KARAF_USER} -c ${STOP_DAEMON}
+}
+
+do_restart()
+{
+    do_stop
+    do_start
+}
+
+case "$1" in
+
+    start)
+        do_start
+        ;;
+    status)
+        do_status
+        ;;
+    stop)
+        do_stop
+        ;;
+    restart)
+        do_restart
+        ;;
+    *)
+        echo "Usage: ${NAME} {start|stop|status|restart}"
+        exit 1
+        ;;
+
+esac
+
+exit 0
