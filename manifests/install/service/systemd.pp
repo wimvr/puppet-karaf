@@ -6,11 +6,6 @@ class karaf::install::service::systemd (
   String $service_user_name,
   String $service_group_name,
 ) {
-  exec { 'karaf - systemd daemon-reload':
-    command     => '/bin/systemctl daemon-reload',
-    refreshonly => true,
-  }
-
   if $ensure == 'absent' {
     $service_ensure = 'stopped'
     $service_enable = false
@@ -25,6 +20,12 @@ class karaf::install::service::systemd (
     file { "/lib/systemd/system/${service_name}.service":
       ensure  => 'file',
       content => template('karaf/etc/systemd/karaf.erb'),
+      notify  => Exec['karaf - systemd daemon-reload'],
+    }
+
+    exec { 'karaf - systemd daemon-reload':
+      command     => '/bin/systemctl daemon-reload',
+      refreshonly => true,
     }
   }
 
@@ -35,6 +36,5 @@ class karaf::install::service::systemd (
     hasstatus  => true,
     hasrestart => true,
     provider   => 'systemd',
-    notify     => Exec['karaf - systemd daemon-reload'],
   }
 }
