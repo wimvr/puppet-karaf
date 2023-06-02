@@ -1,6 +1,6 @@
 {
   "name": "wimvr-karaf",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Wim",
   "summary": "Installs, configures, and manages Apache Karaf instances.",
   "license": "Apache-2.0",
