@@ -5,6 +5,8 @@
   "summary": "Installs, configures, and manages Apache Karaf instances.",
   "license": "Apache-2.0",
   "source": "https://github.com/wimvr/puppet-karaf",
+  "project_page": "https://github.com/wimvr/puppet-karaf/",
+  "issues_url": "https://github.com/wimvr/puppet-karaf/issues",
   "dependencies": [
     {
       "name": "puppetlabs/inifile",
@@ -20,14 +22,14 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "7",
-	"8"
+        "8"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "7",
-	"8"
+        "8"
       ]
     },
     {
