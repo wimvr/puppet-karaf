@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 0.3.0
+
+**Fixed**
+- puppet/archive: Allow 7.x
+
 ## Release 0.2.0
 
 **Features**
