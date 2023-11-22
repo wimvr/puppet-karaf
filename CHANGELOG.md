@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Release 0.3.0
 
+**Features**
+- var for instances_dir
+
 **Fixed**
 - puppet/archive: Allow 7.x
 

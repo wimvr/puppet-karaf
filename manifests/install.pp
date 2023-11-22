@@ -49,6 +49,7 @@ class karaf::install (
     $bin_dir = "${install_dir}bin/"
     $work_dir = "${rootdir}work/"
     $etc_dir = "${work_dir}etc/"
+    $instances_dir = "${work_dir}instances/"
     file { $rootdir:
       ensure => 'directory',
     }
@@ -82,7 +83,7 @@ class karaf::install (
       user    => $service_user_name,
       group   => $service_group_name,
     }
-    file { "${work_dir}instances/":
+    file { $instances_dir:
       ensure => 'directory',
       owner  => $service_user_name,
       group  => $service_group_name,
