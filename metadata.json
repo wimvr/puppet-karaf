@@ -1,7 +1,7 @@
 {
   "name": "wimvr-karaf",
   "version": "0.3.0",
-  "author": "Wim",
+  "author": "Wim van Ravesteijn",
   "summary": "Installs, configures, and manages Apache Karaf instances.",
   "license": "Apache-2.0",
   "source": "https://github.com/wimvr/puppet-karaf",
@@ -36,6 +36,18 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
         "8"
       ]
     },
