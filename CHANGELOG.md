@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 0.4.0
+
+**Features**
+- Puppet 8 support / Drop Puppet 6
+- Added EL9 support
+- Use absolute path instead of symlink for systemd files
+- Correct replacement of version in download URL
+- Add AlmaLinux and Rocky as supported OS
+
 ## Release 0.3.0
 
 **Features**
