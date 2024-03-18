@@ -10,14 +10,14 @@ class karaf::install::service::systemd (
     $service_ensure = 'stopped'
     $service_enable = false
 
-    file { "/lib/systemd/system/${service_name}.service":
+    file { "/usr/lib/systemd/system/${service_name}.service":
       ensure => 'absent',
     }
   } else {
     $service_ensure = 'running'
     $service_enable = true
 
-    file { "/lib/systemd/system/${service_name}.service":
+    file { "/usr/lib/systemd/system/${service_name}.service":
       ensure  => 'file',
       content => template('karaf/etc/systemd/karaf.erb'),
       notify  => Exec['karaf - systemd daemon-reload'],
