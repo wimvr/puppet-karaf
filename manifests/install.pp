@@ -59,7 +59,7 @@ class karaf::install (
       group  => $service_group_name,
     }
     archive { "/tmp/apache-karaf-${version}.zip":
-      source       => $karaf_zip_url.regsubst("\${version}", $version, 'G'),
+      source       => $karaf_zip_url.regsubst("\\\${version}", $version, 'G'),
       extract      => true,
       extract_path => $rootdir,
       creates      => "${install_dir}system/",
