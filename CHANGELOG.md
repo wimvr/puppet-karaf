@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 **Features**
 - Manage instances
+- Fact listing all instances with its state
 - Remove EL7 support
 - Update to current Fedora versions (43, 44)
 
