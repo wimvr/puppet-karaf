@@ -1,7 +1,7 @@
 # @api private
 class karaf::params {
   # Default karaf version to install
-  $version            = '4.4.3'
+  $version            = '4.4.11'
 
   # Default install dir
   $rootdir            = '/opt/karaf/'
@@ -24,7 +24,7 @@ class karaf::params {
   # --------------------------------
   $service_name       = 'karaf'
   case $facts['os']['name'] {
-    'AlmaLinux', 'Rocky', 'RedHat', 'CentOS', 'OracleLinux', 'Scientific', 'OEL', 'SLC', 'CloudLinux': {
+    'AlmaLinux', 'Rocky', 'RedHat', 'CentOS', 'OracleLinux', 'Scientific', 'OEL', 'SLC', 'CloudLinux', 'Fedora': {
       if versioncmp($facts['os']['release']['major'], '7') >= 0 {
         $service_provider    = 'systemd'
       } else {
@@ -57,7 +57,7 @@ class karaf::params {
   # --------------------------------
   # Karaf system properties.
   # --------------------------------
-  $karaf_ssh_host     = 'localhost'
+  $karaf_ssh_host     = '127.0.0.1'
   $karaf_ssh_port     = 8101
 
   # --------------------------------
@@ -74,8 +74,8 @@ class karaf::params {
   # ----------------------------------
   # Karaf Rmi.
   # ----------------------------------
-  $karaf_rmi_registry_host = 'localhost'
+  $karaf_rmi_registry_host = '127.0.0.1'
   $karaf_rmi_registry_port = 1099
-  $karaf_rmi_server_host = 'localhost'
+  $karaf_rmi_server_host = '127.0.0.1'
   $karaf_rmi_server_port = 44444
 }
