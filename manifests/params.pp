@@ -24,7 +24,7 @@ class karaf::params {
   # --------------------------------
   $service_name       = 'karaf'
   case $facts['os']['name'] {
-    'AlmaLinux', 'Rocky', 'RedHat', 'CentOS', 'OracleLinux', 'Scientific', 'OEL', 'SLC', 'CloudLinux', 'Fedora': {
+    'AlmaLinux', 'Rocky', 'RedHat', 'CentOS', 'OracleLinux', 'Scientific', 'OEL', 'SLC', 'CloudLinux': {
       if versioncmp($facts['os']['release']['major'], '7') >= 0 {
         $service_provider    = 'systemd'
       } else {
@@ -78,4 +78,7 @@ class karaf::params {
   $karaf_rmi_registry_port = 1099
   $karaf_rmi_server_host = '127.0.0.1'
   $karaf_rmi_server_port = 44444
+
+  # Remember ssh ports over reinstalls
+  $remember_ssh_ports = false
 }

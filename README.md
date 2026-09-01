@@ -79,9 +79,23 @@ class { 'karaf':
 }
 ```
 
+To create an instance:
+
+``` puppet
+karaf::instance { 'test': }
+```
+
+To make sure that instances get the same ssh port over reinstalls/upgrades:
+
+``` puppet
+class { 'karaf':
+    remember_ssh_ports => true,
+}
+```
+
 ## Limitations
 
-In this version, configuring instances is not yet possible.
+No known
 
 ## Development
 

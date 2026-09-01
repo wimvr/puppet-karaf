@@ -72,9 +72,12 @@
 # @param pidfile
 #   Where to store PID file.
 #
+# @param remember_ssh_ports
+#   Remember ssh ports over installs
+#
 class karaf (
   Enum['present', 'absent'] $ensure            = 'present',
-  String $version                              = $karaf::params::version,
+  String $version                              = $karaf::params::version,
   Stdlib::Absolutepath $rootdir                = $karaf::params::rootdir,
   String $karaf_zip_url                        = $karaf::params::karaf_zip_url,
   Boolean $manage_user                         = $karaf::params::manage_user,
@@ -96,6 +99,7 @@ class karaf (
   String $karaf_rmi_server_host                = $karaf::params::karaf_rmi_server_host,
   Integer $karaf_rmi_server_port               = $karaf::params::karaf_rmi_server_port,
   Stdlib::Absolutepath $pidfile                = $karaf::params::pidfile,
+  Boolean $remember_ssh_ports                  = $karaf::params::remember_ssh_ports,
 ) inherits karaf::params {
   class { 'karaf::install':
     ensure                  => $ensure,
@@ -121,5 +125,13 @@ class karaf (
     karaf_rmi_registry_port => $karaf_rmi_registry_port,
     karaf_rmi_server_host   => $karaf_rmi_server_host,
     karaf_rmi_server_port   => $karaf_rmi_server_port,
+  }
+  if $remember_ssh_ports {
+    file { '/var/lib/karaf/':
+      ensure => 'directory',
+    }
+    file { '/var/lib/karaf/sshports/':
+      ensure => 'directory',
+    }
   }
 }

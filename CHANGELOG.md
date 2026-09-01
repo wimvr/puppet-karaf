@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Release 1.0.0
 
 **Features**
+- Manage instances
 - Remove EL7 support
 - Update to current Fedora versions (43, 44)
 
