@@ -21,50 +21,46 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7",
         "8"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "7",
         "8",
-        "9"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
         "8",
-        "9"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
         "8",
-        "9"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "Rocky",
       "operatingsystemrelease": [
         "8",
-        "9"
-      ]
-    },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "7"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "29"
+        "43",
+        "44"
       ]
     }
   ],

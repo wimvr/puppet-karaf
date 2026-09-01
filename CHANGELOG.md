@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.0.0
+
+**Features**
+- Remove EL7 support
+- Update to current Fedora versions (43, 44)
+
 ## Release 0.4.0
 
 **Features**
