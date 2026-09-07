@@ -50,8 +50,8 @@ class karaf::params {
   # Karaf users definition.
   # --------------------------------
   $karaf_users_definition = {
-    '_g_\\:admingroup' => 'group,admin,manager,viewer,systembundles,ssh',
     'karaf'            => 'karaf,_g_:admingroup',
+    '_g_\\:admingroup' => 'group,admin,manager,viewer,systembundles,ssh',
   }
 
   # --------------------------------
