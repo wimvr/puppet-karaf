@@ -4,13 +4,9 @@ class karaf::install::configuration::users (
   String $service_name,
   Hash[String, String] $karaf_users_definition,
 ) {
-  $karaf_users_definition.each |String $user, String $value| {
-    ini_setting { "${etc_dir}users.properties-${user}":
-      ensure  => 'present',
-      path    => "${etc_dir}users.properties",
-      setting => $user,
-      value   => $value,
-      before  => Service[$service_name],
-    }
+  file { "${etc_dir}users.properties":
+    ensure  => 'file',
+    content => epp('karaf/users.properties.epp', { 'users' => $karaf_users_definition }),
+    before  => Service[$service_name],
   }
 }
