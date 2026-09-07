@@ -18,8 +18,21 @@
 # @param rmi_server_port
 #   Port definition of where RMI server should listen.
 #
+# @param karaf_users_definition
+#   Definition of Karaf users and groups.
+#
 # @param config
 #   Additional configuration settings for the instance. Added to config.properties.
+#
+# @param features_repository
+#   Additional features repository to add to the instance.
+#
+# @param features_boot
+#   Additional features to add to the instance boot list.
+#
+# @param mvn_repositories
+#   Maven repositories.
+#
 define karaf::instance (
   Enum['present', 'absent'] $ensure    = 'present',
   Optional[String] $ssh_host           = '127.0.0.1',
@@ -28,7 +41,12 @@ define karaf::instance (
   Optional[Integer] $rmi_registry_port = undef,
   Optional[String] $rmi_server_host    = '127.0.0.1',
   Optional[Integer] $rmi_server_port   = undef,
+  Optional[Hash[String, String]] $karaf_users_definition = $karaf::karaf_users_definition,
   Optional[Hash[String, String]] $config = {},
+  Optional[String] $features_repository = undef,
+  Optional[String] $features_boot = undef,
+  Optional[Array[String]] $mvn_repositories = $karaf::mvn_repositories,
+  Optional[Hash[String, String]] $repositories = {},
 ) {
   if $ensure == 'present' {
     karaf::client { "instance:create ${name}":
@@ -36,71 +54,38 @@ define karaf::instance (
       creates    => "${karaf::install::instances_dir}${name}/",
     }
     $_require = Karaf::Client["instance:create ${name}"]
-    ini_setting { "karaf instance ${name} sshHost":
-      ensure  => 'present',
-      path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.shell.cfg",
-      setting => 'sshHost',
-      value   => $ssh_host,
-      require => $_require,
+    karaf::instance::ssh { $name:
+      ssh_host  => $ssh_host,
+      ssh_port  => $ssh_port,
+      x_require => $_require,
     }
-    if $ssh_port {
-      $_ssh_port = $ssh_port
-    } elsif $karaf::remember_ssh_ports {
-      $_ssh_port = Deferred('karaf::sshport', [$name, $karaf::install::etc_dir])
-    } else {
-      $_ssh_port = undef
+    karaf::instance::rmi { $name:
+      rmi_registry_host => $rmi_registry_host,
+      rmi_registry_port => $rmi_registry_port,
+      rmi_server_host   => $rmi_server_host,
+      rmi_server_port   => $rmi_server_port,
+      x_require         => $_require,
     }
-    if $_ssh_port {
-      ini_setting { "karaf instance ${name} sshPort":
-        ensure  => 'present',
-        path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.shell.cfg",
-        setting => 'sshPort',
-        value   => $_ssh_port,
-        require => $_require,
-      }
+    karaf::instance::users { $name:
+      karaf_users_definition => $karaf_users_definition,
+      x_require              => $_require,
     }
-    ini_setting { "karaf instance ${name} rmiRegistryHost":
-      ensure  => 'present',
-      path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.management.cfg",
-      setting => 'rmiRegistryHost',
-      value   => $rmi_registry_host,
-      require => $_require,
+    karaf::instance::config { $name:
+      config    => $config,
+      x_require => $_require,
     }
-    if $rmi_registry_port {
-      ini_setting { "karaf instance ${name} rmiRegistryPort":
-        ensure  => 'present',
-        path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.management.cfg",
-        setting => 'rmiRegistryPort',
-        value   => $rmi_registry_port,
-        require => $_require,
-      }
+    karaf::instance::features { $name:
+      features_repository => $features_repository,
+      features_boot       => $features_boot,
+      x_require           => $_require,
     }
-    ini_setting { "karaf instance ${name} rmiServerHost":
-      ensure  => 'present',
-      path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.management.cfg",
-      setting => 'rmiServerHost',
-      value   => $rmi_server_host,
-      require => $_require,
+    karaf::instance::mvn_url { $name:
+      mvn_repositories => $mvn_repositories,
+      x_require        => $_require,
     }
-    if $rmi_server_port {
-      ini_setting { "karaf instance ${name} rmiServerPort":
-        ensure  => 'present',
-        path    => "${karaf::install::instances_dir}${name}/etc/org.apache.karaf.management.cfg",
-        setting => 'rmiServerPort',
-        value   => $rmi_server_port,
-        require => $_require,
-      }
-    }
-    if $config {
-      $config.each |String $config_key, String $config_value| {
-        ini_setting { "karaf instance ${name} config ${config_key}":
-          ensure  => 'present',
-          path    => "${karaf::install::instances_dir}${name}/etc/config.properties",
-          setting => $config_key,
-          value   => $config_value,
-          require => $_require,
-        }
-      }
+    karaf::instance::repositories { $name:
+      repositories => $repositories,
+      x_require    => $_require,
     }
   } elsif $ensure == 'absent' {
     karaf::client { "instance:destroy ${name}":

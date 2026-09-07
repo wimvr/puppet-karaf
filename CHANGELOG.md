@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 **Features**
 - users.properties via template to make sure that not configured accounts are removed
+- extend karaf::instance with more configuration options
 
 ## Release 1.0.0
 
