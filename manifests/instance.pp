@@ -18,6 +18,9 @@
 # @param rmi_server_port
 #   Port definition of where RMI server should listen.
 #
+# @param log_dir
+#   Directory where the log files should be stored.
+#
 # @param karaf_users_definition
 #   Definition of Karaf users and groups.
 #
@@ -41,6 +44,7 @@ define karaf::instance (
   Optional[Integer] $rmi_registry_port = undef,
   Optional[String] $rmi_server_host    = '127.0.0.1',
   Optional[Integer] $rmi_server_port   = undef,
+  Optional[String] $log_dir            = "\${karaf.log}",
   Optional[Hash[String, String]] $karaf_users_definition = $karaf::karaf_users_definition,
   Optional[Hash[String, String]] $config = {},
   Optional[String] $features_repository = undef,
@@ -65,6 +69,10 @@ define karaf::instance (
       rmi_server_host   => $rmi_server_host,
       rmi_server_port   => $rmi_server_port,
       x_require         => $_require,
+    }
+    karaf::instance::logging { $name:
+      log_dir   => $log_dir,
+      x_require => $_require,
     }
     karaf::instance::users { $name:
       karaf_users_definition => $karaf_users_definition,
