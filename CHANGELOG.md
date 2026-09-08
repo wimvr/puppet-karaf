@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 **Fixed**
 - no shared etc & instances dir over different Karaf versions, after upgrade instances need to be build from scratch
+- instance defaults via params
 
 ## Release 1.0.1
 

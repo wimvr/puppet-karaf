@@ -81,4 +81,19 @@ class karaf::params {
 
   # Remember ssh ports over reinstalls
   $remember_ssh_ports = false
+
+  # ----------------------------------
+  # Instance defaults
+  # ----------------------------------
+  $instance_ssh_host           = $karaf_ssh_host
+  $instance_ssh_port           = undef
+  $instance_rmi_registry_host  = $karaf_rmi_registry_host
+  $instance_rmi_registry_port  = undef
+  $instance_rmi_server_host    = $karaf_rmi_server_host
+  $instance_rmi_server_port    = undef
+  $instance_log_dir            = "\${karaf.log}"
+  $instance_config             = {}
+  $instance_features_repository = undef
+  $instance_features_boot      = undef
+  $instance_repositories       = {}
 }

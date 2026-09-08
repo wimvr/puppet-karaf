@@ -36,21 +36,24 @@
 # @param mvn_repositories
 #   Maven repositories.
 #
+# @param repositories
+#   Additional repositories to add to the instance.
+#
 define karaf::instance (
   Enum['present', 'absent'] $ensure    = 'present',
-  Optional[String] $ssh_host           = '127.0.0.1',
-  Optional[Integer] $ssh_port          = undef,
-  Optional[String] $rmi_registry_host  = '127.0.0.1',
-  Optional[Integer] $rmi_registry_port = undef,
-  Optional[String] $rmi_server_host    = '127.0.0.1',
-  Optional[Integer] $rmi_server_port   = undef,
-  Optional[String] $log_dir            = "\${karaf.log}",
+  Optional[String] $ssh_host           = $karaf::params::instance_ssh_host,
+  Optional[Integer] $ssh_port          = $karaf::params::instance_ssh_port,
+  Optional[String] $rmi_registry_host  = $karaf::params::instance_rmi_registry_host,
+  Optional[Integer] $rmi_registry_port = $karaf::params::instance_rmi_registry_port,
+  Optional[String] $rmi_server_host    = $karaf::params::instance_rmi_server_host,
+  Optional[Integer] $rmi_server_port   = $karaf::params::instance_rmi_server_port,
+  Optional[String] $log_dir            = $karaf::params::instance_log_dir,
   Optional[Hash[String, String]] $karaf_users_definition = $karaf::karaf_users_definition,
-  Optional[Hash[String, String]] $config = {},
-  Optional[String] $features_repository = undef,
-  Optional[String] $features_boot = undef,
+  Optional[Hash[String, String]] $config = $karaf::params::instance_config,
+  Optional[String] $features_repository = $karaf::params::instance_features_repository,
+  Optional[String] $features_boot      = $karaf::params::instance_features_boot,
   Optional[Array[String]] $mvn_repositories = $karaf::mvn_repositories,
-  Optional[Hash[String, String]] $repositories = {},
+  Optional[Hash[String, String]] $repositories = $karaf::params::instance_repositories,
 ) {
   if $ensure == 'present' {
     karaf::client { "instance:create ${name}":
