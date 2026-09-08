@@ -9,7 +9,7 @@ describe 'karaf::install' do
       let(:params) do
         {
           ensure: 'present',
-          version: '4.4.3',
+          version: '4.4.11',
           rootdir: '/opt/karaf/',
           java_home: '/usr/lib/jvm/java',
           karaf_zip_url: 'https://example.com/apache-karaf-${version}.zip',

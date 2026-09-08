@@ -9,7 +9,7 @@ describe 'karaf::install::configuration::karaf_shell' do
       let(:pre_condition) { 'service { "karaf": }' }
       let(:params) do
         {
-          etc_dir: '/opt/karaf/work/etc/',
+          etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
           service_name: 'karaf',
           karaf_ssh_host: '127.0.0.1',
           karaf_ssh_port: 8101,
@@ -17,8 +17,8 @@ describe 'karaf::install::configuration::karaf_shell' do
       end
 
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.to contain_ini_setting('/opt/karaf/work/etc/org.apache.karaf.shell.cfg-sshHost').with(setting: 'sshHost', value: '127.0.0.1') }
-      it { is_expected.to contain_ini_setting('/opt/karaf/work/etc/org.apache.karaf.shell.cfg-sshPort').with(setting: 'sshPort', value: 8101) }
+      it { is_expected.to contain_ini_setting('/opt/karaf/apache-karaf-4.4.11/etc/org.apache.karaf.shell.cfg-sshHost').with(setting: 'sshHost', value: '127.0.0.1') }
+      it { is_expected.to contain_ini_setting('/opt/karaf/apache-karaf-4.4.11/etc/org.apache.karaf.shell.cfg-sshPort').with(setting: 'sshPort', value: 8101) }
     end
   end
 end

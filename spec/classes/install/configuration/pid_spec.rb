@@ -9,14 +9,14 @@ describe 'karaf::install::configuration::pid' do
       let(:pre_condition) { 'service { "karaf": }' }
       let(:params) do
         {
-          etc_dir: '/opt/karaf/work/etc/',
+          etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
           service_name: 'karaf',
           pidfile: '/opt/karaf/current/karaf.pid',
         }
       end
 
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.to contain_ini_setting('/opt/karaf/work/etc/config.properties-pid').with(setting: 'karaf.pid.file', value: '/opt/karaf/current/karaf.pid') }
+      it { is_expected.to contain_ini_setting('/opt/karaf/apache-karaf-4.4.11/etc/config.properties-pid').with(setting: 'karaf.pid.file', value: '/opt/karaf/current/karaf.pid') }
     end
   end
 end

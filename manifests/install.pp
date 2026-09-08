@@ -47,9 +47,8 @@ class karaf::install (
     }
   } else {
     $bin_dir = "${install_dir}bin/"
-    $work_dir = "${rootdir}work/"
-    $etc_dir = "${work_dir}etc/"
-    $instances_dir = "${work_dir}instances/"
+    $etc_dir = "${install_dir}etc/"
+    $instances_dir = "${install_dir}instances/"
     file { $rootdir:
       ensure => 'directory',
     }
@@ -71,31 +70,6 @@ class karaf::install (
       target => $install_dir,
       owner  => $service_user_name,
       group  => $service_group_name,
-    }
-    file { $work_dir:
-      ensure => 'directory',
-      owner  => $service_user_name,
-      group  => $service_group_name,
-    }
-    exec { 'initialise karaf etc directory':
-      command => "/usr/bin/cp -ar ${install_dir}etc/ ${work_dir}",
-      creates => $etc_dir,
-      user    => $service_user_name,
-      group   => $service_group_name,
-    }
-    file { $instances_dir:
-      ensure => 'directory',
-      owner  => $service_user_name,
-      group  => $service_group_name,
-    }
-    ['etc/', 'instances/'].each |$dir| {
-      file { "${install_dir}${dir}":
-        ensure => 'link',
-        target => "${work_dir}${dir}",
-        force  => true,
-        owner  => $service_user_name,
-        group  => $service_group_name,
-      }
     }
 
     class { 'karaf::install::configuration':

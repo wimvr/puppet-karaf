@@ -31,7 +31,7 @@ describe 'karaf::instance' do
         end
 
         expect(client_resource).not_to be_nil
-        expect(client_resource[:creates]).to eq("/opt/karaf/work/instances/#{title}/")
+        expect(client_resource[:creates]).to eq("/opt/karaf/apache-karaf-4.4.11/instances/#{title}/")
       end
 
       context 'with instance settings' do
@@ -58,8 +58,8 @@ describe 'karaf::instance' do
         it { is_expected.to contain_ini_setting("karaf instance #{title} rmiServerHost").with(value: '0.0.0.0') }
         it { is_expected.to contain_ini_setting("karaf instance #{title} rmiServerPort").with(value: 44445) }
         it { is_expected.to contain_ini_setting("karaf instance #{title} config service.pid").with(value: 'example') }
-        it { is_expected.to contain_file("/opt/karaf/work/instances/#{title}/etc/users.properties").with(content: %r{admin = secret,admin}) }
-        it { is_expected.to contain_file("/opt/karaf/work/instances/#{title}/etc/org.ops4j.pax.url.mvn.cfg").with(content: %r{repo\.example\.test}) }
+        it { is_expected.to contain_file("/opt/karaf/apache-karaf-4.4.11/instances/#{title}/etc/users.properties").with(content: %r{admin = secret,admin}) }
+        it { is_expected.to contain_file("/opt/karaf/apache-karaf-4.4.11/instances/#{title}/etc/org.ops4j.pax.url.mvn.cfg").with(content: %r{repo\.example\.test}) }
         it { is_expected.to contain_ini_setting("karaf instance #{title} repository example").with(value: 'mvn:example/features/1.0/xml/features') }
       end
 

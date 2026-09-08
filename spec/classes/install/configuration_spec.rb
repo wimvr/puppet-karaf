@@ -9,8 +9,8 @@ describe 'karaf::install::configuration' do
       let(:pre_condition) { 'service { "karaf": }' }
       let(:params) do
         {
-          bin_dir: '/opt/karaf/apache-karaf-4.4.3/bin/',
-          etc_dir: '/opt/karaf/work/etc/',
+          bin_dir: '/opt/karaf/apache-karaf-4.4.11/bin/',
+          etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
           service_name: 'karaf',
           service_user_name: 'karaf',
           service_group_name: 'karaf',

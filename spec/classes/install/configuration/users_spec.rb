@@ -9,7 +9,7 @@ describe 'karaf::install::configuration::users' do
       let(:pre_condition) { 'service { "karaf": }' }
       let(:params) do
         {
-          etc_dir: '/opt/karaf/work/etc/',
+          etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
           service_name: 'karaf',
           karaf_users_definition: {
             '_g_\\:admingroup' => 'group,admin,manager,viewer,systembundles,ssh',
@@ -19,8 +19,8 @@ describe 'karaf::install::configuration::users' do
       end
 
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.to contain_file('/opt/karaf/work/etc/users.properties').with(content: %r{karaf = karaf,_g_:admingroup}) }
-      it { is_expected.to contain_file('/opt/karaf/work/etc/users.properties').with(content: %r{_g_\\:admingroup = group,admin,manager,viewer,systembundles,ssh}) }
+      it { is_expected.to contain_file('/opt/karaf/apache-karaf-4.4.11/etc/users.properties').with(content: %r{karaf = karaf,_g_:admingroup}) }
+      it { is_expected.to contain_file('/opt/karaf/apache-karaf-4.4.11/etc/users.properties').with(content: %r{_g_\\:admingroup = group,admin,manager,viewer,systembundles,ssh}) }
     end
   end
 end
