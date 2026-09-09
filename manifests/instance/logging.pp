@@ -1,3 +1,4 @@
+# @api private
 define karaf::instance::logging (
   String $log_dir,
   Type[Resource] $x_require,
