@@ -1,5 +1,7 @@
 # @api public
 #
+# @summary Executes a command using the Karaf client.
+#
 # @param bin_dir
 #   Directory containing the Karaf client executable.
 #

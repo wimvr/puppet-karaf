@@ -1,3 +1,4 @@
+# @api private
 Puppet::Functions.create_function(:'karaf::sshport') do
   dispatch :sshport do
     required_param 'String', :process
