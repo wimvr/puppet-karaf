@@ -9,6 +9,7 @@ describe 'karaf::install::user' do
       let(:params) do
         {
           ensure: 'present',
+          home_dir: '/opt/karaf/home/',
           service_user_name: 'karaf',
           service_user_id: 5000,
           service_group_name: 'karaf',
@@ -18,7 +19,7 @@ describe 'karaf::install::user' do
 
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to contain_group('karaf').with(ensure: 'present', gid: 5000) }
-      it { is_expected.to contain_user('karaf').with(ensure: 'present', uid: 5000, gid: 5000, managehome: true, shell: '/bin/bash') }
+      it { is_expected.to contain_user('karaf').with(ensure: 'present', uid: 5000, gid: 5000, managehome: true, shell: '/bin/bash', home: '/opt/karaf/home/') }
     end
   end
 end

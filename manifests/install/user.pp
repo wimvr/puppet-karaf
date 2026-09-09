@@ -1,6 +1,7 @@
 # @api private
 class karaf::install::user (
   Enum['present', 'absent'] $ensure = 'present',
+  Stdlib::Absolutepath $home_dir    = $karaf::params::home_dir,
   String $service_user_name         = $karaf::params::service_user_name,
   Integer $service_user_id          = $karaf::params::service_user_id,
   String $service_group_name        = $karaf::params::service_group_name,
@@ -16,6 +17,7 @@ class karaf::install::user (
     gid        => $service_user_id,
     managehome => true,
     shell      => '/bin/bash',
+    home       => $home_dir,
   }
   if $ensure == 'absent' {
     User[$service_user_name] -> Group[$service_group_name]

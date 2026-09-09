@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 **Features**
 - configure logging directory for instances
+- login on instances via ssh with RSA key from user under which karaf runs
 
 **Fixed**
 - no shared etc & instances dir over different Karaf versions, after upgrade instances need to be build from scratch

@@ -18,6 +18,12 @@
 # @param manage_user
 #   Should this module create Unix user and group.
 #
+# @param home_dir
+#   Home directory of the Karaf user.
+#
+# @param keyed_login
+#   Whether to use public-key authentication login to instances.
+#
 # @param service_user_name
 #   As which Unix user to run Karaf.
 #
@@ -81,6 +87,8 @@ class karaf (
   Stdlib::Absolutepath $rootdir                = $karaf::params::rootdir,
   String $karaf_zip_url                        = $karaf::params::karaf_zip_url,
   Boolean $manage_user                         = $karaf::params::manage_user,
+  Stdlib::Absolutepath $home_dir               = $karaf::params::home_dir,
+  Boolean $keyed_login                         = $karaf::params::keyed_login,
   String $service_user_name                    = $karaf::params::service_user_name,
   Integer $service_user_id                     = $karaf::params::service_user_id,
   String $service_group_name                   = $karaf::params::service_group_name,
@@ -108,6 +116,8 @@ class karaf (
     java_home               => $java_home,
     karaf_zip_url           => $karaf_zip_url,
     manage_user             => $manage_user,
+    home_dir                => $home_dir,
+    keyed_login             => $keyed_login,
     service_user_name       => $service_user_name,
     service_user_id         => $service_user_id,
     service_group_name      => $service_group_name,

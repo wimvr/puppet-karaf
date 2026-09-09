@@ -14,6 +14,8 @@ class karaf::params {
 
   # Should this module create the user/group.
   $manage_user        = true
+  $home_dir           = "${rootdir}home"
+  $keyed_login        = false
   $service_user_name  = 'karaf'
   $service_user_id    = 5000
   $service_group_name = 'karaf'

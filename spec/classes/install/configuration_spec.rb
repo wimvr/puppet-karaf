@@ -6,11 +6,13 @@ describe 'karaf::install::configuration' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
-      let(:pre_condition) { 'service { "karaf": }' }
+      let(:pre_condition) { 'service { "karaf": } user { "karaf": }' }
       let(:params) do
         {
           bin_dir: '/opt/karaf/apache-karaf-4.4.11/bin/',
           etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
+          home_dir: '/opt/karaf/home/',
+          manage_user: true,
           service_name: 'karaf',
           service_user_name: 'karaf',
           service_group_name: 'karaf',

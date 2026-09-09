@@ -14,6 +14,8 @@ describe 'karaf::install' do
           java_home: '/usr/lib/jvm/java',
           karaf_zip_url: 'https://example.com/apache-karaf-${version}.zip',
           manage_user: true,
+          home_dir: '/opt/karaf/home/',
+          keyed_login: false,
           service_user_name: 'karaf',
           service_user_id: 5000,
           service_group_name: 'karaf',

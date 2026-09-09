@@ -6,6 +6,8 @@ class karaf::install (
   Stdlib::Absolutepath $java_home,
   String $karaf_zip_url,
   Boolean $manage_user,
+  Stdlib::Absolutepath $home_dir,
+  Boolean $keyed_login,
   String $service_user_name,
   Integer $service_user_id,
   String $service_group_name,
@@ -27,6 +29,7 @@ class karaf::install (
   if $manage_user {
     class { 'karaf::install::user':
       ensure             => $ensure,
+      home_dir           => $home_dir,
       service_user_name  => $service_user_name,
       service_user_id    => $service_user_id,
       service_group_name => $service_group_name,
@@ -75,6 +78,8 @@ class karaf::install (
     class { 'karaf::install::configuration':
       bin_dir                 => $bin_dir,
       etc_dir                 => $etc_dir,
+      home_dir                => $home_dir,
+      manage_user             => $manage_user,
       service_name            => $service_name,
       service_user_name       => $service_user_name,
       service_group_name      => $service_group_name,
@@ -90,6 +95,13 @@ class karaf::install (
       karaf_rmi_registry_port => $karaf_rmi_registry_port,
       karaf_rmi_server_host   => $karaf_rmi_server_host,
       karaf_rmi_server_port   => $karaf_rmi_server_port,
+    }
+
+    if $keyed_login {
+      ssh_keygen { $service_user_name:
+        type => 'rsa',
+        home => $home_dir,
+      }
     }
   }
 

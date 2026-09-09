@@ -2,15 +2,23 @@
 class karaf::install::configuration::m2_settings (
   String $user,
   String $group,
+  Stdlib::Absolutepath $home_dir,
+  Boolean $manage_user,
   Struct[{ Optional[servers] => Array, Optional[mirrors] => Array }] $m2_settings,
 ) {
-  file { "/home/${user}/.m2/":
+  if $manage_user {
+    $_require = User[$user]
+  } else {
+    $_require = undef
+  }
+  file { "${home_dir}/.m2/":
     ensure  => 'directory',
     owner   => $user,
     group   => $group,
     seltype => 'user_home_t',
+    require => $_require,
   }
-  file { "/home/${user}/.m2/settings.xml":
+  file { "${home_dir}/.m2/settings.xml":
     ensure  => 'file',
     owner   => $user,
     group   => $group,

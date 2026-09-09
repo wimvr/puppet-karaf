@@ -2,6 +2,8 @@
 class karaf::install::configuration (
   Stdlib::Absolutepath $bin_dir,
   Stdlib::Absolutepath $etc_dir,
+  Stdlib::Absolutepath $home_dir,
+  Boolean $manage_user,
   String $service_name,
   String $service_user_name,
   String $service_group_name,
@@ -21,6 +23,8 @@ class karaf::install::configuration (
   class { 'karaf::install::configuration::m2_settings':
     user        => $service_user_name,
     group       => $service_group_name,
+    home_dir    => $home_dir,
+    manage_user => $manage_user,
     m2_settings => $m2_settings,
   }
 

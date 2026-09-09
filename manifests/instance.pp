@@ -98,6 +98,11 @@ define karaf::instance (
       repositories => $repositories,
       x_require    => $_require,
     }
+    if $karaf::keyed_login {
+      karaf::instance::keys { $name:
+        x_require => $_require,
+      }
+    }
   } elsif $ensure == 'absent' {
     karaf::client { "instance:destroy ${name}":
       parameters => ['instance:destroy', $name],
