@@ -27,6 +27,31 @@
 * `karaf::install::user`
 * `karaf::params`
 
+### Defined types
+
+#### Public Defined types
+
+* [`karaf::client`](#karaf--client): Executes a command using the Karaf client.
+* [`karaf::instance`](#karaf--instance): Install and configure an Apache Karaf instance
+
+#### Private Defined types
+
+* `karaf::instance::config`
+* `karaf::instance::features`
+* `karaf::instance::keys`
+* `karaf::instance::logging`
+* `karaf::instance::mvn_url`
+* `karaf::instance::repositories`
+* `karaf::instance::rmi`
+* `karaf::instance::ssh`
+* `karaf::instance::users`
+
+### Functions
+
+#### Private Functions
+
+* `karaf::sshport`
+
 ## Classes
 
 ### <a name="karaf"></a>`karaf`
@@ -50,6 +75,8 @@ The following parameters are available in the `karaf` class:
 * [`rootdir`](#-karaf--rootdir)
 * [`karaf_zip_url`](#-karaf--karaf_zip_url)
 * [`manage_user`](#-karaf--manage_user)
+* [`home_dir`](#-karaf--home_dir)
+* [`keyed_login`](#-karaf--keyed_login)
 * [`service_user_name`](#-karaf--service_user_name)
 * [`service_user_id`](#-karaf--service_user_id)
 * [`service_group_name`](#-karaf--service_group_name)
@@ -68,6 +95,7 @@ The following parameters are available in the `karaf` class:
 * [`karaf_rmi_server_host`](#-karaf--karaf_rmi_server_host)
 * [`karaf_rmi_server_port`](#-karaf--karaf_rmi_server_port)
 * [`pidfile`](#-karaf--pidfile)
+* [`remember_ssh_ports`](#-karaf--remember_ssh_ports)
 
 ##### <a name="-karaf--ensure"></a>`ensure`
 
@@ -108,6 +136,22 @@ Data type: `Boolean`
 Should this module create Unix user and group.
 
 Default value: `$karaf::params::manage_user`
+
+##### <a name="-karaf--home_dir"></a>`home_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Home directory of the Karaf user.
+
+Default value: `$karaf::params::home_dir`
+
+##### <a name="-karaf--keyed_login"></a>`keyed_login`
+
+Data type: `Boolean`
+
+Whether to use public-key authentication login to instances.
+
+Default value: `$karaf::params::keyed_login`
 
 ##### <a name="-karaf--service_user_name"></a>`service_user_name`
 
@@ -252,4 +296,212 @@ Data type: `Stdlib::Absolutepath`
 Where to store PID file.
 
 Default value: `$karaf::params::pidfile`
+
+##### <a name="-karaf--remember_ssh_ports"></a>`remember_ssh_ports`
+
+Data type: `Boolean`
+
+Remember ssh ports over installs
+
+Default value: `$karaf::params::remember_ssh_ports`
+
+## Defined types
+
+### <a name="karaf--client"></a>`karaf::client`
+
+Executes a command using the Karaf client.
+
+#### Parameters
+
+The following parameters are available in the `karaf::client` defined type:
+
+* [`bin_dir`](#-karaf--client--bin_dir)
+* [`parameters`](#-karaf--client--parameters)
+* [`creates`](#-karaf--client--creates)
+* [`unless`](#-karaf--client--unless)
+* [`onlyif`](#-karaf--client--onlyif)
+
+##### <a name="-karaf--client--bin_dir"></a>`bin_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Directory containing the Karaf client executable.
+
+Default value: `$karaf::install::bin_dir`
+
+##### <a name="-karaf--client--parameters"></a>`parameters`
+
+Data type: `Array[String]`
+
+Arguments passed to the Karaf client command.
+
+Default value: `[$name]`
+
+##### <a name="-karaf--client--creates"></a>`creates`
+
+Data type: `Optional[String]`
+
+File whose existence prevents the command from running.
+
+Default value: `undef`
+
+##### <a name="-karaf--client--unless"></a>`unless`
+
+Data type: `Optional[String]`
+
+Command that prevents the client command from running when successful.
+
+Default value: `undef`
+
+##### <a name="-karaf--client--onlyif"></a>`onlyif`
+
+Data type: `Optional[String]`
+
+Command that allows the client command to run when successful.
+
+Default value: `undef`
+
+### <a name="karaf--instance"></a>`karaf::instance`
+
+Install and configure an Apache Karaf instance
+
+#### Parameters
+
+The following parameters are available in the `karaf::instance` defined type:
+
+* [`ensure`](#-karaf--instance--ensure)
+* [`state`](#-karaf--instance--state)
+* [`ssh_host`](#-karaf--instance--ssh_host)
+* [`ssh_port`](#-karaf--instance--ssh_port)
+* [`rmi_registry_host`](#-karaf--instance--rmi_registry_host)
+* [`rmi_registry_port`](#-karaf--instance--rmi_registry_port)
+* [`rmi_server_host`](#-karaf--instance--rmi_server_host)
+* [`rmi_server_port`](#-karaf--instance--rmi_server_port)
+* [`log_dir`](#-karaf--instance--log_dir)
+* [`karaf_users_definition`](#-karaf--instance--karaf_users_definition)
+* [`config`](#-karaf--instance--config)
+* [`features_repository`](#-karaf--instance--features_repository)
+* [`features_boot`](#-karaf--instance--features_boot)
+* [`mvn_repositories`](#-karaf--instance--mvn_repositories)
+* [`repositories`](#-karaf--instance--repositories)
+
+##### <a name="-karaf--instance--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+Specifies whether the Apache Karaf instance should be present or absent.
+
+Default value: `'present'`
+
+##### <a name="-karaf--instance--state"></a>`state`
+
+Data type: `Optional[Enum['started', 'stopped']]`
+
+Specifies whether the Apache Karaf instance should be started or stopped.
+
+Default value: `undef`
+
+##### <a name="-karaf--instance--ssh_host"></a>`ssh_host`
+
+Data type: `Optional[String]`
+
+Host definition of where SSH should listen.
+
+Default value: `$karaf::params::instance_ssh_host`
+
+##### <a name="-karaf--instance--ssh_port"></a>`ssh_port`
+
+Data type: `Optional[Integer]`
+
+Port definition of where SSH should listen.
+
+Default value: `$karaf::params::instance_ssh_port`
+
+##### <a name="-karaf--instance--rmi_registry_host"></a>`rmi_registry_host`
+
+Data type: `Optional[String]`
+
+Host definition of where RMI registry should listen.
+
+Default value: `$karaf::params::instance_rmi_registry_host`
+
+##### <a name="-karaf--instance--rmi_registry_port"></a>`rmi_registry_port`
+
+Data type: `Optional[Integer]`
+
+Port definition of where RMI registry should listen.
+
+Default value: `$karaf::params::instance_rmi_registry_port`
+
+##### <a name="-karaf--instance--rmi_server_host"></a>`rmi_server_host`
+
+Data type: `Optional[String]`
+
+Host definition of where RMI server should listen.
+
+Default value: `$karaf::params::instance_rmi_server_host`
+
+##### <a name="-karaf--instance--rmi_server_port"></a>`rmi_server_port`
+
+Data type: `Optional[Integer]`
+
+Port definition of where RMI server should listen.
+
+Default value: `$karaf::params::instance_rmi_server_port`
+
+##### <a name="-karaf--instance--log_dir"></a>`log_dir`
+
+Data type: `Optional[String]`
+
+Directory where the log files should be stored.
+
+Default value: `$karaf::params::instance_log_dir`
+
+##### <a name="-karaf--instance--karaf_users_definition"></a>`karaf_users_definition`
+
+Data type: `Optional[Hash[String, String]]`
+
+Definition of Karaf users and groups.
+
+Default value: `$karaf::karaf_users_definition`
+
+##### <a name="-karaf--instance--config"></a>`config`
+
+Data type: `Optional[Hash[String, String]]`
+
+Additional configuration settings for the instance. Added to config.properties.
+
+Default value: `$karaf::params::instance_config`
+
+##### <a name="-karaf--instance--features_repository"></a>`features_repository`
+
+Data type: `Optional[String]`
+
+Additional features repository to add to the instance.
+
+Default value: `$karaf::params::instance_features_repository`
+
+##### <a name="-karaf--instance--features_boot"></a>`features_boot`
+
+Data type: `Optional[String]`
+
+Additional features to add to the instance boot list.
+
+Default value: `$karaf::params::instance_features_boot`
+
+##### <a name="-karaf--instance--mvn_repositories"></a>`mvn_repositories`
+
+Data type: `Optional[Array[String]]`
+
+Maven repositories.
+
+Default value: `$karaf::mvn_repositories`
+
+##### <a name="-karaf--instance--repositories"></a>`repositories`
+
+Data type: `Optional[Hash[String, String]]`
+
+Additional repositories to add to the instance.
+
+Default value: `$karaf::params::instance_repositories`
 
