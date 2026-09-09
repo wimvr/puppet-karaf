@@ -6,6 +6,7 @@ define karaf::instance::keys (
     file { "${karaf::install::instances_dir}${name}/etc/keys.properties":
       ensure  => 'file',
       content => epp('karaf/keys.properties.epp', { 'keys' => { 'karaf' => "${facts['karaf']['rsa.pub']},_g_:admingroup" } }),
+      seltype => 'usr_t',
       require => $x_require,
     }
   }

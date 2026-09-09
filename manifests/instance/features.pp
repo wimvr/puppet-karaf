@@ -74,4 +74,13 @@ define karaf::instance::features (
       require => Exec["karaf instance ${name} featuresBoot preserve default"],
     }
   }
+
+  file { $_features_cfg:
+    ensure  => 'file',
+    owner   => $karaf::service_user_name,
+    group   => $karaf::service_group_name,
+    mode    => '0644',
+    seltype => 'usr_t',
+    require => $x_require,
+  }
 }

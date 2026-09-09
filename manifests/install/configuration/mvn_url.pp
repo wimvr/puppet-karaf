@@ -8,9 +8,10 @@ class karaf::install::configuration::mvn_url (
 ) {
   file { "${etc_dir}org.ops4j.pax.url.mvn.cfg":
     ensure  => 'file',
+    content => epp('karaf/org.ops4j.pax.url.mvn.cfg.epp', { 'mvn_repositories' => $mvn_repositories }),
     owner   => $service_user_name,
     group   => $service_group_name,
-    content => epp('karaf/org.ops4j.pax.url.mvn.cfg.epp', { 'mvn_repositories' => $mvn_repositories }),
+    seltype => 'usr_t',
     before  => Service[$service_name],
   }
 }

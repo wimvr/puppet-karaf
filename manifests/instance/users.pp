@@ -6,6 +6,7 @@ define karaf::instance::users (
   file { "${karaf::install::instances_dir}${name}/etc/users.properties":
     ensure  => 'file',
     content => epp('karaf/users.properties.epp', { 'users' => $karaf_users_definition }),
+    seltype => 'usr_t',
     require => $x_require,
   }
 }
