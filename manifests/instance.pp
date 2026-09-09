@@ -3,6 +3,9 @@
 # @param ensure
 #   Specifies whether the Apache Karaf instance should be present or absent.
 #
+# @param state
+#   Specifies whether the Apache Karaf instance should be started or stopped.
+#
 # @param ssh_host
 #   Host definition of where SSH should listen.
 # @param ssh_port
@@ -41,6 +44,7 @@
 #
 define karaf::instance (
   Enum['present', 'absent'] $ensure    = 'present',
+  Optional[Enum['started', 'stopped']] $state = undef,
   Optional[String] $ssh_host           = $karaf::params::instance_ssh_host,
   Optional[Integer] $ssh_port          = $karaf::params::instance_ssh_port,
   Optional[String] $rmi_registry_host  = $karaf::params::instance_rmi_registry_host,
@@ -101,6 +105,27 @@ define karaf::instance (
     if $karaf::keyed_login {
       karaf::instance::keys { $name:
         x_require => $_require,
+      }
+    }
+    $_require_startstop = [
+      Karaf::Instance::Ssh[$name],
+      Karaf::Instance::Rmi[$name],
+      Karaf::Instance::Logging[$name],
+      Karaf::Instance::Users[$name],
+      Karaf::Instance::Config[$name],
+      Karaf::Instance::Features[$name],
+      Karaf::Instance::Mvn_url[$name],
+      Karaf::Instance::Repositories[$name]
+    ]
+    if $state == 'started' and ($facts['karaf']['instances'][$name] == undef or $facts['karaf']['instances'][$name] == 'Stopped') {
+      karaf::client { "instance:start ${name}":
+        parameters => ['instance:start', $name],
+        require    => $_require_startstop,
+      }
+    } elsif $state == 'stopped' and $facts['karaf']['instances'][$name] == 'Started' {
+      karaf::client { "instance:stop ${name}":
+        parameters => ['instance:stop', $name],
+        require    => $_require_startstop,
       }
     }
   } elsif $ensure == 'absent' {

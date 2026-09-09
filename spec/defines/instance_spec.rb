@@ -84,6 +84,30 @@ describe 'karaf::instance' do
         it { is_expected.to contain_exec("karaf instance #{title} featuresBoot preserve default").with(onlyif: %r{featuresBoot = }) }
         it { is_expected.to contain_exec("karaf instance #{title} featuresBoot").with(unless: %r{featuresBoot = }) }
       end
+
+      context 'with state started' do
+        let(:facts) { os_facts.merge('karaf' => { 'instances' => { title => 'Stopped' } }) }
+        let(:params) { { state: 'started' } }
+
+        it { is_expected.to contain_karaf__client("instance:start #{title}").with(parameters: ['instance:start', title]) }
+        it { is_expected.not_to contain_karaf__client("instance:stop #{title}") }
+      end
+
+      context 'with state stopped' do
+        let(:facts) { os_facts.merge('karaf' => { 'instances' => { title => 'Started' } }) }
+        let(:params) { { state: 'stopped' } }
+
+        it { is_expected.to contain_karaf__client("instance:stop #{title}").with(parameters: ['instance:stop', title]) }
+        it { is_expected.not_to contain_karaf__client("instance:start #{title}") }
+      end
+
+      context 'when the instance already has the requested state' do
+        let(:facts) { os_facts.merge('karaf' => { 'instances' => { title => 'Started' } }) }
+        let(:params) { { state: 'started' } }
+
+        it { is_expected.not_to contain_karaf__client("instance:start #{title}") }
+        it { is_expected.not_to contain_karaf__client("instance:stop #{title}") }
+      end
     end
   end
 end
