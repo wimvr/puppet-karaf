@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Release 1.2.0
 
+**Features**
+- when featuresRepositories or featuresBoot change, clear cache and restart instance
+
 **Fixed**
 - when Java not available, skip installation till available
 

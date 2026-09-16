@@ -37,6 +37,7 @@ define karaf::instance::features (
       command => $_update_features_script,
       unless  => $_features_current_script,
       require => Exec["karaf instance ${name} featuresRepositories preserve default"],
+      notify  => Exec["karaf instance ${name} features restart when changed"],
     }
   }
 
@@ -72,7 +73,13 @@ define karaf::instance::features (
       command => $_update_boot_script,
       unless  => $_boot_current_script,
       require => Exec["karaf instance ${name} featuresBoot preserve default"],
+      notify  => Exec["karaf instance ${name} features restart when changed"],
     }
+  }
+
+  exec { "karaf instance ${name} features restart when changed":
+    command     => "/bin/sh -c 'STATE=\$(/usr/bin/echo \"instance:status ${name}\" | ${karaf::install::bin_dir}client -b) ; /usr/bin/echo \"instance:stop ${name}\" | ${karaf::install::bin_dir}client -b ; /usr/bin/rm -Rf ${karaf::install::instances_dir}${name}/data/cache/ ${karaf::install::instances_dir}${name}/data/tmp/ && if [ \"\$STATE\" == \"Started\" ]; then /usr/bin/echo \"instance:start ${name}\" | ${karaf::install::bin_dir}client -b; fi'",
+    refreshonly => true,
   }
 
   file { $_features_cfg:
