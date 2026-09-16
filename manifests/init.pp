@@ -43,7 +43,7 @@
 #   Is the system using init.d or systemd to run system services.
 #
 # @param java_home
-#   Home of Java installation.
+#   Home of Java installation. If undef (e.g. Java not installed yet), Karaf installation is skipped with a warning.
 #
 # @param default_env_vars
 #   Default environment variables to set.
@@ -95,7 +95,7 @@ class karaf (
   Integer $service_group_id                    = $karaf::params::service_group_id,
   String $service_name                         = $karaf::params::service_name,
   Enum['systemd', 'init'] $service_provider    = $karaf::params::service_provider,
-  Stdlib::Absolutepath $java_home              = $karaf::params::java_home,
+  Optional[Stdlib::Absolutepath] $java_home    = $karaf::params::java_home,
   Hash[String, String] $default_env_vars       = $karaf::params::default_env_vars,
   Hash[String, String] $karaf_users_definition = $karaf::params::karaf_users_definition,
   String $karaf_ssh_host                       = $karaf::params::karaf_ssh_host,
@@ -109,39 +109,43 @@ class karaf (
   Stdlib::Absolutepath $pidfile                = $karaf::params::pidfile,
   Boolean $remember_ssh_ports                  = $karaf::params::remember_ssh_ports,
 ) inherits karaf::params {
-  class { 'karaf::install':
-    ensure                  => $ensure,
-    version                 => $version,
-    rootdir                 => $rootdir,
-    java_home               => $java_home,
-    karaf_zip_url           => $karaf_zip_url,
-    manage_user             => $manage_user,
-    home_dir                => $home_dir,
-    keyed_login             => $keyed_login,
-    service_user_name       => $service_user_name,
-    service_user_id         => $service_user_id,
-    service_group_name      => $service_group_name,
-    service_group_id        => $service_group_id,
-    service_name            => $service_name,
-    default_env_vars        => $default_env_vars,
-    pidfile                 => $pidfile,
-    service_provider        => $service_provider,
-    mvn_repositories        => $mvn_repositories,
-    m2_settings             => $m2_settings,
-    karaf_users_definition  => $karaf_users_definition,
-    karaf_ssh_host          => $karaf_ssh_host,
-    karaf_ssh_port          => $karaf_ssh_port,
-    karaf_rmi_registry_host => $karaf_rmi_registry_host,
-    karaf_rmi_registry_port => $karaf_rmi_registry_port,
-    karaf_rmi_server_host   => $karaf_rmi_server_host,
-    karaf_rmi_server_port   => $karaf_rmi_server_port,
-  }
-  if $remember_ssh_ports {
-    file { '/var/lib/karaf/':
-      ensure => 'directory',
+  if $java_home {
+    class { 'karaf::install':
+      ensure                  => $ensure,
+      version                 => $version,
+      rootdir                 => $rootdir,
+      java_home               => $java_home,
+      karaf_zip_url           => $karaf_zip_url,
+      manage_user             => $manage_user,
+      home_dir                => $home_dir,
+      keyed_login             => $keyed_login,
+      service_user_name       => $service_user_name,
+      service_user_id         => $service_user_id,
+      service_group_name      => $service_group_name,
+      service_group_id        => $service_group_id,
+      service_name            => $service_name,
+      default_env_vars        => $default_env_vars,
+      pidfile                 => $pidfile,
+      service_provider        => $service_provider,
+      mvn_repositories        => $mvn_repositories,
+      m2_settings             => $m2_settings,
+      karaf_users_definition  => $karaf_users_definition,
+      karaf_ssh_host          => $karaf_ssh_host,
+      karaf_ssh_port          => $karaf_ssh_port,
+      karaf_rmi_registry_host => $karaf_rmi_registry_host,
+      karaf_rmi_registry_port => $karaf_rmi_registry_port,
+      karaf_rmi_server_host   => $karaf_rmi_server_host,
+      karaf_rmi_server_port   => $karaf_rmi_server_port,
     }
-    file { '/var/lib/karaf/sshports/':
-      ensure => 'directory',
+    if $remember_ssh_ports {
+      file { '/var/lib/karaf/':
+        ensure => 'directory',
+      }
+      file { '/var/lib/karaf/sshports/':
+        ensure => 'directory',
+      }
     }
+  } else {
+    warning('karaf: java_home could not be determined (facts[\'java_default_home\'] is undef); install Java and rerun Puppet.')
   }
 }

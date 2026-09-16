@@ -203,9 +203,9 @@ Default value: `$karaf::params::service_provider`
 
 ##### <a name="-karaf--java_home"></a>`java_home`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `Optional[Stdlib::Absolutepath]`
 
-Home of Java installation.
+Home of Java installation. If undef (e.g. Java not installed yet), Karaf installation is skipped with a warning.
 
 Default value: `$karaf::params::java_home`
 

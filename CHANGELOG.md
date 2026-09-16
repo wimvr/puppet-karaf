@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.0
+
+**Fixed**
+- when Java not available, skip installation till available
+
 ## Release 1.1.1
 
 **Fixed**
