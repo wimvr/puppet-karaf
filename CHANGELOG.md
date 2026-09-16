@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 **Fixed**
 - when Java not available, skip installation till available
+- when updating features.cfg, set correct permissions
 
 ## Release 1.1.1
 

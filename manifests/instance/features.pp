@@ -28,6 +28,8 @@ define karaf::instance::features (
       "/usr/bin/awk -v repository='${features_repository}' 'BEGIN { active=0 } { lines[NR]=\$0; if (\$0 ~ /^# featuresRepositories = /) { base_value=\$0; sub(/^# featuresRepositories = /, \"\", base_value) } if (\$0 ~ /^featuresRepositories = / && !active) active=NR } END { desired=\"featuresRepositories = \" base_value \",\" repository; for (i=1; i<=NR; i++) { if (i == active) print desired; else print lines[i] } }'",
       "'${_features_cfg}' > '${_features_cfg}.tmp'",
       "&& /usr/bin/mv '${_features_cfg}.tmp' '${_features_cfg}'",
+      "&& /usr/bin/chown ${karaf::service_user_name}:${karaf::service_group_name} '${_features_cfg}'",
+      "&& /usr/bin/chcon -u system_u -t usr_t '${_features_cfg}'",
     ].join(' ')
     $_features_current_script = [
       "/usr/bin/awk -v repository='${features_repository}' 'BEGIN { active=0 } /^# featuresRepositories = / { base_value=\$0; sub(/^# featuresRepositories = /, \"\", base_value) } /^featuresRepositories = / && !active { active=\$0; sub(/^featuresRepositories = /, \"\", active) } END { exit !(base_value != \"\" && active == base_value \",\" repository) }'",
@@ -64,6 +66,8 @@ define karaf::instance::features (
       "/usr/bin/awk -v boot='${features_boot}' 'BEGIN { active=0 } { lines[NR]=\$0; if (\$0 ~ /^# featuresBoot = /) { base_value=\$0; sub(/^# featuresBoot = /, \"\", base_value) } if (\$0 ~ /^featuresBoot = / && !active) active=NR } END { desired=\"featuresBoot = \" base_value \",\" boot; for (i=1; i<=NR; i++) { if (i == active) print desired; else print lines[i] } }'",
       "'${_features_cfg}' > '${_features_cfg}.tmp'",
       "&& /usr/bin/mv '${_features_cfg}.tmp' '${_features_cfg}'",
+      "&& /usr/bin/chown ${karaf::service_user_name}:${karaf::service_group_name} '${_features_cfg}'",
+      "&& /usr/bin/chcon -u system_u -t usr_t '${_features_cfg}'",
     ].join(' ')
     $_boot_current_script = [
       "/usr/bin/awk -v boot='${features_boot}' 'BEGIN { active=0 } /^# featuresBoot = / { base_value=\$0; sub(/^# featuresBoot = /, \"\", base_value) } /^featuresBoot = / && !active { active=\$0; sub(/^featuresBoot = /, \"\", active) } END { exit !(base_value != \"\" && active == base_value \",\" boot) }'",
