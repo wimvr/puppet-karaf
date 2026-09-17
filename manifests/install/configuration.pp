@@ -68,6 +68,8 @@ class karaf::install::configuration (
   class { 'karaf::install::configuration::users':
     etc_dir                => $etc_dir,
     service_name           => $service_name,
+    service_user_name      => $service_user_name,
+    service_group_name     => $service_group_name,
     karaf_users_definition => $karaf_users_definition,
   }
 }

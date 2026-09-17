@@ -11,6 +11,8 @@ describe 'karaf::install::configuration::users' do
         {
           etc_dir: '/opt/karaf/apache-karaf-4.4.11/etc/',
           service_name: 'karaf',
+          service_user_name: 'karaf',
+          service_group_name: 'karaf',
           karaf_users_definition: {
             '_g_\\:admingroup' => 'group,admin,manager,viewer,systembundles,ssh',
             'karaf' => 'karaf,_g_:admingroup',
