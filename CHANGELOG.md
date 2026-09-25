@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.2.1
+
+**Fixed**
+- correct order of script execution (user creation needs rootdir to exist for homedir)
+
 ## Release 1.2.0
 
 **Features**

@@ -34,6 +34,7 @@ class karaf::install (
       service_user_id    => $service_user_id,
       service_group_name => $service_group_name,
       service_group_id   => $service_group_id,
+      require            => File[$rootdir],
     }
   }
 
