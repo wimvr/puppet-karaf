@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.0
+
+**Features**
+- suppport version update of Karaf
+
 ## Release 1.2.1
 
 **Fixed**

@@ -117,7 +117,16 @@ define karaf::instance (
       Karaf::Instance::Mvn_url[$name],
       Karaf::Instance::Repositories[$name]
     ]
-    if $state == 'started' and ($facts['karaf']['instances'][$name] == undef or $facts['karaf']['instances'][$name] == 'Stopped') {
+    $_instance_state = $facts['karaf']['instances'][$name]
+    $_start_after_upgrade = $_instance_state == 'Started' and defined(Exec['start karaf after upgrade'])
+    if $state == 'started' and $_start_after_upgrade {
+      karaf::client { "instance:start ${name}":
+        parameters     => ['instance:start', $name],
+        require        => $_require_startstop,
+        refreshonly    => true,
+        exec_subscribe => Exec['start karaf after upgrade'],
+      }
+    } elsif $state == 'started' and ($_instance_state == undef or $_instance_state == 'Stopped') {
       karaf::client { "instance:start ${name}":
         parameters => ['instance:start', $name],
         require    => $_require_startstop,

@@ -1,0 +1,45 @@
+<%- |
+  $karaf_client,
+| -%>
+#!/bin/bash
+
+set -euo pipefail
+
+INSTANCE_LIST=$(<%= $karaf_client %> instance:list 2>&1) || {
+  status=$?
+  printf '%s\n' "${INSTANCE_LIST}" >&2
+  exit "${status}"
+}
+
+INSTANCES=$(awk -F '|' '
+  {
+    name = $9
+    state = $7
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", name)
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", state)
+
+    if (name != "root" && (state == "Starting" || state == "Started")) {
+      if (matches) {
+        printf " "
+      }
+      printf "%s", name
+      matches = 1
+    }
+  }
+  END {
+    print ""
+  }
+' <<< "${INSTANCE_LIST}")
+
+if [[ -n "${INSTANCES}" ]]; then
+  INSTANCE_COUNT=$(wc -w <<< "${INSTANCES}")
+  if echo "instance:stop ${INSTANCES}" | <%= $karaf_client %> -b; then
+    echo "${INSTANCE_COUNT} instance(s) stopped."
+  else
+    status=$?
+    echo "Stopping ${INSTANCE_COUNT} instance(s) failed (exitcode ${status})." >&2
+    exit "${status}"
+  fi
+else
+  echo "No instances found to stop."
+fi

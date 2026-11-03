@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'karaf::instance' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { os_facts.merge('karaf' => { 'instances' => [] }) }
+      let(:facts) { os_facts.merge('karaf' => { 'instances' => {} }) }
       let(:pre_condition) do
         <<-PUPPET
         class { 'karaf':
@@ -101,14 +101,19 @@ describe 'karaf::instance' do
         it { is_expected.not_to contain_karaf__client("instance:start #{title}") }
       end
 
-      context 'when the instance already has the requested state' do
+      context 'when Karaf is restarted after an upgrade' do
         let(:facts) { os_facts.merge('karaf' => { 'instances' => { title => 'Started' } }) }
         let(:params) { { state: 'started' } }
 
-        it { is_expected.not_to contain_karaf__client("instance:start #{title}") }
+        it { is_expected.to contain_karaf__client("instance:start #{title}").with(refreshonly: true, exec_subscribe: "Exec[start karaf after upgrade]") }
         it { is_expected.not_to contain_karaf__client("instance:stop #{title}") }
+        it do
+          is_expected.to contain_exec("karaf client instance:start #{title}").with(
+            refreshonly: true,
+            subscribe: "Exec[start karaf after upgrade]",
+          )
+        end
       end
     end
   end
 end
-

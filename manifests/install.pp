@@ -69,11 +69,30 @@ class karaf::install (
       user         => $service_user_name,
       group        => $service_group_name,
     }
+    exec { 'stop karaf before upgrade':
+      command     => "${instance_root}bin/stop-all-instances.sh ; /usr/bin/systemctl stop ${service_name}",
+      onlyif      => "/usr/bin/systemctl is-active --quiet ${service_name}",
+      refreshonly => true,
+      before      => File[$instance_root],
+      subscribe   => Archive["/tmp/apache-karaf-${version}.zip"],
+    }
     file { $instance_root:
       ensure => 'link',
       target => $install_dir,
       owner  => $service_user_name,
       group  => $service_group_name,
+    }
+    exec { 'start karaf after upgrade':
+      command     => "/usr/bin/systemctl start ${service_name}",
+      unless      => "/usr/bin/systemctl is-active --quiet ${service_name}",
+      refreshonly => true,
+      subscribe   => Exec['stop karaf before upgrade'],
+    }
+
+    file { "${bin_dir}stop-all-instances.sh":
+      ensure  => 'file',
+      mode    => '0755',
+      content => epp('karaf/stop-all-instances.sh.epp', { 'karaf_client' => "${bin_dir}client" }),
     }
 
     class { 'karaf::install::configuration':

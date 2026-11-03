@@ -320,6 +320,8 @@ The following parameters are available in the `karaf::client` defined type:
 * [`creates`](#-karaf--client--creates)
 * [`unless`](#-karaf--client--unless)
 * [`onlyif`](#-karaf--client--onlyif)
+* [`exec_subscribe`](#-karaf--client--exec_subscribe)
+* [`refreshonly`](#-karaf--client--refreshonly)
 
 ##### <a name="-karaf--client--bin_dir"></a>`bin_dir`
 
@@ -360,6 +362,22 @@ Data type: `Optional[String]`
 Command that allows the client command to run when successful.
 
 Default value: `undef`
+
+##### <a name="-karaf--client--exec_subscribe"></a>`exec_subscribe`
+
+Data type: `Optional[Type[Resource]]`
+
+Class or resource that the exec should subscribe to.
+
+Default value: `undef`
+
+##### <a name="-karaf--client--refreshonly"></a>`refreshonly`
+
+Data type: `Optional[Boolean]`
+
+Whether the command should run only after the resource it subscribes to is refreshed.
+
+Default value: `false`
 
 ### <a name="karaf--instance"></a>`karaf::instance`
 
